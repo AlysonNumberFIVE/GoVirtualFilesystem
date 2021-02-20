@@ -25,16 +25,16 @@ func shellLoop() {
 		input = input[:len(input) - 2]
 
 		switch input {	
-			case "open":
-				library.Open()
-			case "close":
-				library.Close()
-			case "remove":
-				library.RemoveDir()
-			case "ls":
-				library.listDir()
-			default:
-				fmt.Println(input, ": Command not found")
+		case "open":
+			library.Open()
+		case "close":
+			library.Close()
+		case "remove":
+			library.RemoveDir()
+		case "ls":
+			library.listDir()
+		default:
+			fmt.Println(input, ": Command not found")
 		}
 	}
 }
