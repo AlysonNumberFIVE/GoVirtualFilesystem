@@ -10,7 +10,7 @@ import (
 var globalFileTable map[uint64]string
 
 /*
-** the data structure for each file.
+** The data structure for each file.
 **    name - The name of the file.
 **    pathFromRoot - The absolute path of the file
 **    fileHash - The unique file hash assigned to this file on
@@ -44,7 +44,7 @@ type fileSystem struct {
 	prev *fileSystem
 }
 
-// Root node
+// Root node.
 var root *fileSystem	
 
 /*
@@ -72,7 +72,7 @@ func (root * fileSystem) tearDown() {
 }
 
 /*
-** save the state of the VFS at this time.
+** Saves the state of the VFS at this time.
 */
 func (root * fileSystem) saveState() {
 	fmt.Println("Save the current state of the VFS")

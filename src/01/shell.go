@@ -8,7 +8,7 @@ import (
 )
 
 /*
-** shellLoop runs the main shell loop for the filesystem.
+** Runs the main shell loop for the filesystem.
 */
 func shellLoop() {
 

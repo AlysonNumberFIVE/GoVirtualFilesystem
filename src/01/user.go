@@ -7,10 +7,10 @@ import (
 )
 
 /*
-** User Object
-** 		userID - A randomized integer representing the users's unique ID
-** 		username - The user's onscreen name
-**		accessList - A map containing the unique hashes of existing files
+** The main user object.
+**    userID - A randomized integer representing the users's unique ID
+**    username - The user's onscreen name
+**    accessList - A map containing the unique hashes of existing files
 **				and any custom/specific access rights added
 **				by the user.
 */
@@ -26,7 +26,6 @@ type user struct {
 func generateRandomID() uint64 {
 	return uint64(rand.Uint32()) << 32 + uint64(rand.Uint32())
 }
-
 
 /*
 ** Creates a user object.
