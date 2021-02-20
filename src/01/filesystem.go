@@ -5,17 +5,26 @@ import (
 	"fmt"
 )
 
+// A global list of all files created and their respective names for
+// ease of lookup.
+var globalFileTable map[uint64]string
+
 /*
 ** the data structure for each file.
 **    name - The name of the file.
+**    pathFromRoot - The absolute path of the file
+**    fileHash - The unique file hash assigned to this file on
+**        creation
 **    fileType - The type of the file.
 **    content - The file's content in bytes.
 **    size - the size in bytes of the file.
 */
 type file struct {
 	name string
+	pathFromRoot string
+	fileHash uint64
 	fileType string
-	content bytes
+	content byte
 	size uint64
 }
 
@@ -31,27 +40,40 @@ type file struct {
 type fileSystem struct {
 	directory string
 	files []file
-	directories []list
+	directories []fileSystem
 	prev *fileSystem
 }
+
+// Root node
+var root *fileSystem	
 
 /*
 ** Scans the current directory and builds the VFS from it.
 */
-func initFilesystem() {
+func initFilesystem() * fileSystem {
+	// recursively grab all files and directories from this level downwards.
 	fmt.Println("Welcome to the tiny virtual filesystem.")
+	return root
 }
 
 /*
 ** Resets the VFS and scraps all changes made up to this point.
 **  (basically like a rerun of initFilesystem())
 */
-func reloadFilesys() {
+func (root * fileSystem) reloadFilesys() {
 	fmt.Println("Refreshing...")
 }
 
+/*
+** Gracefully ends the current session.
+*/
+func (root * fileSystem) tearDown() {
+	fmt.Println("Teardown")
+}
 
-
-
-
-
+/*
+** save the state of the VFS at this time.
+*/
+func (root * fileSystem) saveState() {
+	fmt.Println("Save the current state of the VFS")
+}
