@@ -44,21 +44,3 @@ func createUser(username string) *user {
 func (currentUser * user) updateUsername(username string) {
 	currentUser.username = username
 }
-
-
-
-func main() {
-	newUser := createUser("AlysonV")
-	fmt.Println("new user logged in : ", newUser.username)
-	fmt.Println("User ID : ", newUser.userID)
-	newUser.updateUsername("VivianS")
-	fmt.Println("new user is ", newUser.username)
-	fmt.Println("User ID : ", newUser.userID)
-}
-
-
-
-
-
-
-

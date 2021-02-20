@@ -5,13 +5,13 @@ import (
 	"fmt"
 )
 
-type Library struct {
+type library struct {
 }
 
 /*
 ** Initialize the library functions.
 */
-func InitLibrary() *Library {
+func initLibrary() *library {
 	fmt.Println("Importing library.")
 	return &Library{}
 }
@@ -19,48 +19,47 @@ func InitLibrary() *Library {
 /*
 ** This will allow for opening files in virtual space.
 */
-func (session * Library) Open() error {
-	fmt.Println("Open() called")
+func (session * library) open() error {
+	fmt.Println("open() called")
 	return nil
 }
 
 /*
 ** Close virtual file.
 */
-func (session * Library) Close() error {
-	fmt.Println("Close() called")
+func (session * library) close() error {
+	fmt.Println("close() called")
 	return nil
 }
 
 /*
 ** Make a virtual directory.
 */
-func (session * Library) MkDir() error {
-	fmt.Println("MkDir() called")
+func (session * library) mkDir() error {
+	fmt.Println("mkDir() called")
 	return nil
 }
 
 /*
 ** Remove a file from the virtual filesystem.
 */
-func (session * Library) RemoveFile() error {
-	fmt.Println("RemoveFile() called")
+func (session * library) removeFile() error {
+	fmt.Println("removeFile() called")
 	return nil
 }
 
 /*
 ** Remove a directory from a virtual filesystem.
 */
-func (session * Library) RemoveDir() error {
-	fmt.Println("RemoveDir() called")
+func (session * library) removeDir() error {
+	fmt.Println("removeDir() called")
 	return nil
 }
 
 /*
 ** List directory contents.
 */
-func (session * Library) listDir() error {
-	fmt.Println("ListDir() called")
+func (session * library) listDir() error {
+	fmt.Println("listDir() called")
 	return nil
 }
-

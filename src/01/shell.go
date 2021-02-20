@@ -8,9 +8,9 @@ import (
 )
 
 /*
-** ShellLoop runs the main shell loop for the filesystem.
+** shellLoop runs the main shell loop for the filesystem.
 */
-func ShellLoop() {
+func shellLoop() {
 
 	library := InitLibrary()
 	reader := bufio.NewReader(os.Stdin)
@@ -37,10 +37,4 @@ func ShellLoop() {
 				fmt.Println(input, ": Command not found")
 		}
 	}
-}
-
-
-func main() {
-
-	ShellLoop()
 }
