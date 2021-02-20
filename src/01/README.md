@@ -32,6 +32,8 @@ An extension of this object is the function `shellLoop()` which can be found in 
 See `filesystem.go`<br>
 The collection of structures that will hold all the file and directories we'll be interacting with.
 
+#### Onward to Ex02
+When I've completed the next part, I'll post the link here (or you could just visit 02/, whatever works I guess ':D).
 
 
 
