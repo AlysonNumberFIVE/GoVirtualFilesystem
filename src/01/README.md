@@ -6,7 +6,7 @@ The first exercise entails creating the groundwork for the upcoming projects. Th
 ### 1. Download Go
 
 The first step is to setup your machine to ensure you're able to use Go. You can download the binaries <a href="
-https://golang.org/dl/">at the official site</a> for either Windows, MacOS or Linux. Unzip the binary and follow the prompts to install.
+https://golang.org/dl/">here</a> for either Windows, MacOS or Linux. Unzip the binary and follow the prompts to install.
 
 ### 2. Setup your project
 
