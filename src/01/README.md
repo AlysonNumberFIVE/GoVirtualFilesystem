@@ -1,6 +1,6 @@
 # Ex01 - Laying the Foundation
 
-This is a shortened version of <a href="">this</a> article in exercise form.<br><br>
+This is a shortened version of <a href="https://alysonn.medium.com/a-virtual-filesystem-in-go-creating-our-foundation-9af62b0e82db">this</a> article in exercise form.<br><br>
 The first exercise entails creating the groundwork for the upcoming projects. The steps below are as follows<br><br>
 
 ### 1. Download Go
