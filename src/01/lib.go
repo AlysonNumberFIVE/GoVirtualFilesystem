@@ -8,57 +8,43 @@ import (
 type library struct {
 }
 
-/*
-** Initialize the library functions.
-*/
+// initLibrary initializes the library functions.
 func initLibrary() *library {
 	fmt.Println("Importing library.")
 	return &Library{}
 }
 
-/*
-** This will allow for opening files in virtual space.
-*/
+// open will allow for opening files in virtual space.
 func (session * library) open() error {
 	fmt.Println("open() called")
 	return nil
 }
 
-/*
-** Close virtual file.
-*/
+// close closes open virtual files.
 func (session * library) close() error {
 	fmt.Println("close() called")
 	return nil
 }
 
-/*
-** Make a virtual directory.
-*/
+// mkDir makes a virtual directory.
 func (session * library) mkDir() error {
 	fmt.Println("mkDir() called")
 	return nil
 }
 
-/*
-** Remove a file from the virtual filesystem.
-*/
+// removeFile removes a file from the virtual filesystem.
 func (session * library) removeFile() error {
 	fmt.Println("removeFile() called")
 	return nil
 }
 
-/*
-** Remove a directory from a virtual filesystem.
-*/
+// removeDir removes a directory from the virtual filesystem.
 func (session * library) removeDir() error {
 	fmt.Println("removeDir() called")
 	return nil
 }
 
-/*
-** List directory contents.
-*/
+// listDir lists a directory's contents.
 func (session * library) listDir() error {
 	fmt.Println("listDir() called")
 	return nil
