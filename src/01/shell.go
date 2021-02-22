@@ -7,9 +7,7 @@ import (
 	"os"
 )
 
-/*
-** Runs the main shell loop for the filesystem.
-*/
+// shellLoop runs the main shell loop for the filesystem.
 func shellLoop() {
 
 	library := InitLibrary()

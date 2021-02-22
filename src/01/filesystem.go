@@ -11,20 +11,20 @@ var globalFileTable map[uint64]string
 
 // The data structure for each file.
 type file struct {
-	name string // The name of the file.
+	name string         // The name of the file.
 	pathFromRoot string // The absolute path of the file.
-	fileHash uint64 // The unique file hash assigned to this file on creation.
-	fileType string // The type of the file.
-	content byte // The file's content in bytes.
-	size uint64 // The size in bytes of the file.
+	fileHash uint64     // The unique file hash assigned to this file on creation.
+	fileType string     // The type of the file.
+	content byte        // The file's content in bytes.
+	size uint64         // The size in bytes of the file.
 }
 
 //  The core struct that makes up the filesystem's file/directory
 type fileSystem struct {
-	directory string // The name of the current directory we're in.
-	files []file // The list of files in this directory.
+	directory string         // The name of the current directory we're in.
+	files []file             // The list of files in this directory.
 	directories []fileSystem // The list of directories in this directory.
-	prev *fileSystem // a reference pointer to this directory's parent directory.
+	prev *fileSystem         // a reference pointer to this directory's parent directory.
 }
 
 // Root node.

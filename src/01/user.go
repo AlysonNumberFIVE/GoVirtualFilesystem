@@ -6,30 +6,19 @@ import (
 	"math/rand"
 )
 
-/*
-** The main user object.
-**    userID - A randomized integer representing the users's unique ID
-**    username - The user's onscreen name
-**    accessList - A map containing the unique hashes of existing files
-**				and any custom/specific access rights added
-**				by the user.
-*/
+// The main user object.
 type user struct {
-	userID uint64
-	username string
-	accessList map[string]int
+	userID uint64             // A randomized integer representing the users's unique ID.
+	username string           // The user's onscreen name.
+	accessList map[string]int // A map containing the unique hashes and access rights for each file.
 }
 
-/*
-** Generates a random userID.
-*/
+// generateRandomID generates a random userID value.
 func generateRandomID() uint64 {
 	return uint64(rand.Uint32()) << 32 + uint64(rand.Uint32())
 }
 
-/*
-** Creates a user object.
-*/
+// createUser creates a user object.
 func createUser(username string) *user {
 	return &user{
 		userID: generateRandomID(),
@@ -37,9 +26,7 @@ func createUser(username string) *user {
 	}
 }
 
-/*
-** Update the name of the current user.
-*/
+// updateUsername updates the name of the current user.
 func (currentUser * user) updateUsername(username string) {
 	currentUser.username = username
 }
