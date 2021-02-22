@@ -8,8 +8,8 @@ import (
 
 // The main user object.
 type user struct {
-	userID uint64             // A randomized integer representing the users's unique ID.
-	username string           // The user's onscreen name.
+	userID     uint64         // A randomized integer representing the users's unique ID.
+	username   string         // The user's onscreen name.
 	accessList map[string]int // A map containing the unique hashes and access rights for each file.
 }
 
