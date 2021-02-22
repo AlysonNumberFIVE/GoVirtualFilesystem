@@ -2,20 +2,23 @@
 package main
 
 import (
-	"fmt"
-	"math/rand"
+	"crypto/rand"
+	"encoding/base64"
 )
 
 // The main user object.
 type user struct {
-	userID     uint64         // A randomized integer representing the users's unique ID.
+	userID     string         // A randomized hash string representing the users's unique ID.
 	username   string         // The user's onscreen name.
 	accessList map[string]int // A map containing the unique hashes and access rights for each file.
 }
 
 // generateRandomID generates a random userID value.
-func generateRandomID() uint64 {
-	return uint64(rand.Uint32()) << 32 + uint64(rand.Uint32())
+func generateRandomID() string {
+	// return uint64(rand.Uint32()) << 32 + uint64(rand.Uint32())
+    bytes := make([]byte, 64)
+   	rand.Read(bytes)
+    return base64.URLEncoding.EncodeToString(bytes)
 }
 
 // createUser creates a user object.

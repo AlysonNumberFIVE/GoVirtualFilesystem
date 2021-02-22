@@ -10,7 +10,7 @@ import (
 // shellLoop runs the main shell loop for the filesystem.
 func shellLoop() {
 
-	library := InitLibrary()
+	library := initLibrary()
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Printf("$>")
@@ -24,11 +24,11 @@ func shellLoop() {
 
 		switch input {	
 		case "open":
-			library.Open()
+			library.open()
 		case "close":
-			library.Close()
+			library.close()
 		case "remove":
-			library.RemoveDir()
+			library.removeDir()
 		case "ls":
 			library.listDir()
 		default:

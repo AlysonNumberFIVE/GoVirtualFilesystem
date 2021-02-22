@@ -11,7 +11,7 @@ type library struct {
 // initLibrary initializes the library functions.
 func initLibrary() *library {
 	fmt.Println("Importing library.")
-	return &Library{}
+	return &library{}
 }
 
 // open will allow for opening files in virtual space.
