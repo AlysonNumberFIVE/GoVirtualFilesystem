@@ -4,6 +4,8 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"log"
+	"github.com/chzyer/readline"
 )
 
 // The main user object.
@@ -32,4 +34,29 @@ func createUser(username string) *user {
 // updateUsername updates the name of the current user.
 func (currentUser * user) updateUsername(username string) {
 	currentUser.username = username
+}
+
+// initPrompt initializes the input buffer for the
+// shell.
+func (currentUser * user) initPrompt() (*readline.Instance) {
+	autoCompleter := readline.NewPrefixCompleter(
+		readline.PcItem("open"),
+		readline.PcItem("close"),
+		readline.PcItem("mkdir"),
+		readline.PcItem("cd"),
+		readline.PcItem("rmdir"),
+		readline.PcItem("rm"),
+		readline.PcItem("exit"),
+	)
+	prompt, err := readline.NewEx(&readline.Config{
+		Prompt: 			currentUser.username + "$>",
+		HistoryFile:		"/tmp/readline.tmp",
+		AutoComplete:		autoCompleter,
+		InterruptPrompt:	"^C",
+		EOFPrompt:			"exit",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return prompt
 }

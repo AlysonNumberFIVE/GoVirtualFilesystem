@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 // A global list of all files created and their respective names for
@@ -24,7 +25,7 @@ type fileSystem struct {
 	directory   string       // The name of the current directory we're in.
 	files       []file       // The list of files in this directory.
 	directories []fileSystem // The list of directories in this directory.
-	prev        *fileSystem  // a reference pointer to this directory's parent directory.
+	prev        *fileSystem  // a reference pointer to this directory's parent directory.	
 }
 
 // Root node.
@@ -39,16 +40,78 @@ func initFilesystem() * fileSystem {
 
 // reloadFilesys Resets the VFS and scraps all changes made up to this point.
 // (basically like a rerun of initFilesystem())
-func (root * fileSystem) reloadFilesys() {
+func (fs  * fileSystem) reloadFilesys() {
 	fmt.Println("Refreshing...")
 }
 
 // tearDown gracefully ends the current session.
-func (root * fileSystem) tearDown() {
+func (fs  * fileSystem) tearDown() {
 	fmt.Println("Teardown")
 }
 
 // saveState aves the state of the VFS at this time.
-func (root * fileSystem) saveState() {
+func (fs  * fileSystem) saveState() {
 	fmt.Println("Save the current state of the VFS")
+}
+
+// open will allow for opening files in virtual space.
+func (fs  * fileSystem) open() error {
+	fmt.Println("open() called")
+	return nil
+}
+
+// close closes open virtual files.
+func (fs  * fileSystem) close() error {
+	fmt.Println("close() called")
+	return nil
+}
+
+// mkDir makes a virtual directory.
+func (fs  * fileSystem) mkDir() error {
+	fmt.Println("mkDir() called")
+	return nil
+}
+
+// removeFile removes a file from the virtual filesystem.
+func (fs  * fileSystem) removeFile() error {
+	fmt.Println("removeFile() called")
+	return nil
+}
+
+// removeDir removes a directory from the virtual filesystem.
+func (fs  * fileSystem) removeDir() error {
+	fmt.Println("removeDir() called")
+	return nil
+}
+
+// listDir lists a directory's contents.
+func (fs  * fileSystem) listDir() error {
+	fmt.Println("listDir() called")
+	return nil
+}
+
+// chDir lists a directory's contents.
+func (fs  * fileSystem) chDir() error {
+	fmt.Println("chDir() called")
+	return nil
+}
+
+// execute runs the commands passed into it.
+func (fs * fileSystem) execute(command string) {
+	switch command {
+	case "open":
+		fs.open()
+	case "close":
+		fs.close()
+	case "ls":
+		fs.listDir()
+	case "rm":
+		fs.removeFile()
+		fs.removeDir() 
+	case "cd":
+		fs.chDir()
+	case "exit":
+		fs.tearDown()
+		os.Exit(1)
+	}
 }

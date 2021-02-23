@@ -2,37 +2,26 @@
 package main
 
 import (
-	"fmt"
-	"bufio"
-	"os"
+	"strings"
 )
 
 // shellLoop runs the main shell loop for the filesystem.
-func shellLoop() {
+func shellLoop(currentUser *user) {
 
-	library := initLibrary()
-	reader := bufio.NewReader(os.Stdin)
+	filesystem := initFilesystem()
+	prompt := currentUser.initPrompt()
 	for {
-		fmt.Printf("$>")
-		input, _ := reader.ReadString('\n')
-	
-		if input == "\r\n" {
+		input, _ := prompt.Readline()
+		input = strings.TrimSpace(input)
+		if len(input) == 0 {
 			continue 
 		}
-
-		input = input[:len(input) - 2]
-
-		switch input {	
-		case "open":
-			library.open()
-		case "close":
-			library.close()
-		case "remove":
-			library.removeDir()
-		case "ls":
-			library.listDir()
-		default:
-			fmt.Println(input, ": Command not found")
-		}
+		filesystem.execute(input)
 	}
+}
+
+func main() {
+	currentUser := initUser()
+
+	shellLoop(currentUser)
 }
