@@ -98,10 +98,11 @@ func (fs  * fileSystem) chDir() error {
 
 // execute runs the commands passed into it.
 func (fs * fileSystem) execute(command string) {
+
 	switch command {
 	case "open":
 		fs.open()
-	case "close":
+	case "close":	
 		fs.close()
 	case "ls":
 		fs.listDir()
@@ -114,6 +115,6 @@ func (fs * fileSystem) execute(command string) {
 		fs.tearDown()
 		os.Exit(1)
 	default:
-		fmt.Printf(command, ": Command not found")
+		fmt.Println(command, ": Command not found")
 	}
 }
