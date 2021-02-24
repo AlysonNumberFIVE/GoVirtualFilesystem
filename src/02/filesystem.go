@@ -113,5 +113,7 @@ func (fs * fileSystem) execute(command string) {
 	case "exit":
 		fs.tearDown()
 		os.Exit(1)
+	default:
+		fmt.Printf(command, ": Command not found")
 	}
 }
