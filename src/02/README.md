@@ -40,11 +40,11 @@ func (currentUser * user) initPrompt() (*readline.Instance) {
 		readline.PcItem("exit"),
 	)
 	prompt, err := readline.NewEx(&readline.Config{
-		Prompt: 			currentUser.username + "$>",
-		HistoryFile:		"/tmp/readline.tmp",
-		AutoComplete:		autoCompleter,
-		InterruptPrompt:	"^C",
-		EOFPrompt:			"exit",
+		Prompt: currentUser.username + "$>",
+		HistoryFile: "/tmp/readline.tmp",
+		AutoComplete: autoCompleter,
+		InterruptPrompt: "^C",
+		EOFPrompt: "exit",
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -53,3 +53,14 @@ func (currentUser * user) initPrompt() (*readline.Instance) {
 }
 ```
 This function sets the prompt we'll be making use of in our shell. It's turned into a member of the user object because the only external variable it uses is the `username` variable that can be found in `user`.<br><br>
+### The Readline functions
+Here's a brief rundown of the above code:<br?
+- `Prompt` - The name that will appear on the user prompt in the shell.
+- `HistoryFile` - The location of the file that will store all command history.
+- `AutoComplete` - The list of strings that can be autocompleted in the shell (by pressing TAB).
+- `InterruptPrompt` - The signal handle that can interrupt the shell.
+- `EOFPrompt` - The message printed out on exit.
+
+- `NewPrefixCompleter` - The function responsible for handling autocompletion.
+
+
