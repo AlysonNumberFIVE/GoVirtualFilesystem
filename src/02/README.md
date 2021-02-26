@@ -1,4 +1,4 @@
-# Creating the First Feature
+# Ex 02 - Creating the First Feature
 
 This is the repo for my Medium post that can be found <a href="">here</a>.<br>
 In this exercise, we'll be creating our first new features and refactoring our code a bit.<br>
