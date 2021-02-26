@@ -18,3 +18,38 @@ Inside `initUser`, you'll find the `setName()` function. All it will do for now 
 guest users. Once done, this information will be used as an argument for our `createUser()` function to instantiate a new user with our chosen name.
 
 ## Passing our name over to the prompt.
+Inside `user.go`<br>
+The prompt makes use of the library `readline` (which can be downloaded and imported from `github.com/chzyer/readline` and used as shown in the imports in this file.
+ ```
+ import(
+  ...
+    "github.com/chzyer/readline
+  )
+  ```
+  Here we see the first of our refactors. All of `readline`s functionality is added directly into the main body of the method `initPrompt()`.<br>
+Let's go into this function a little bit more.
+```
+func (currentUser * user) initPrompt() (*readline.Instance) {
+	autoCompleter := readline.NewPrefixCompleter(
+		readline.PcItem("open"),
+		readline.PcItem("close"),
+		readline.PcItem("mkdir"),
+		readline.PcItem("cd"),
+		readline.PcItem("rmdir"),
+		readline.PcItem("rm"),
+		readline.PcItem("exit"),
+	)
+	prompt, err := readline.NewEx(&readline.Config{
+		Prompt: 			currentUser.username + "$>",
+		HistoryFile:		"/tmp/readline.tmp",
+		AutoComplete:		autoCompleter,
+		InterruptPrompt:	"^C",
+		EOFPrompt:			"exit",
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return prompt
+}
+```
+This function sets the prompt we'll be making use of in our shell. It's turned into a member of the user object because the only external variable it uses is the `username` variable that can be found in `user`.<br><br>
