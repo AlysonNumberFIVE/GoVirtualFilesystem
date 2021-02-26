@@ -54,13 +54,58 @@ func (currentUser * user) initPrompt() (*readline.Instance) {
 ```
 This function sets the prompt we'll be making use of in our shell. It's turned into a member of the user object because the only external variable it uses is the `username` variable that can be found in `user`.<br><br>
 ### The Readline functions
-Here's a brief rundown of the above code:<br?
+Here's a brief rundown of the above code:<br>
+Inside `readline.Config`:<br>
 - `Prompt` - The name that will appear on the user prompt in the shell.
 - `HistoryFile` - The location of the file that will store all command history.
 - `AutoComplete` - The list of strings that can be autocompleted in the shell (by pressing TAB).
 - `InterruptPrompt` - The signal handle that can interrupt the shell.
-- `EOFPrompt` - The message printed out on exit.
-
-- `NewPrefixCompleter` - The function responsible for handling autocompletion.
+- `EOFPrompt` - The message printed out on exit.<br>
 
 
+`NewPrefixCompleter` - The function responsible for handling autocompletion.<br><br>
+## The Shell Loop
+Open file `shell.go`<BR>
+In this file resides our main; first it will initialize the project by allowing us to set our name, then pass its control to `shellLoop()`.<br>
+In our shell loop, our `readline` prompt object is passed over to the shell and our Filesystem is initialized.<br><br>
+### Changes in our filesystem.
+`lib.go` was deleted and all it's member methods were passed over into the shell which are used in the `filesystem.execute()` command inside the `ShellLoop's body, like so;
+The new new loop looks like this:
+```
+filesystem := initFilesystem()
+prompt := currentUser.initPrompt()
+for {
+	input, _ := prompt.Readline()
+	input = strings.TrimSpace(input)
+	if len(input) == 0 {
+		continue 
+	}
+	filesystem.execute(input)
+}
+```
+And `execute()` has the following body.<br>
+```
+// execute runs the commands passed into it.
+func (fs * fileSystem) execute(command string) {
+
+	switch command {
+	case "open":
+		fs.open()
+	case "close":	
+		fs.close()
+	case "ls":
+		fs.listDir()
+	case "rm":
+		fs.removeFile()
+		fs.removeDir() 
+	case "cd":
+		fs.chDir()
+	case "exit":
+		fs.tearDown()
+		os.Exit(1)
+	default:
+		fmt.Println(command, ": Command not found")
+	}
+}
+```
+That's all for this week. On to fleshing out the `initFilesystem()` method next.
