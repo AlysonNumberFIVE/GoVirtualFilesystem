@@ -108,4 +108,5 @@ func (fs * fileSystem) execute(command string) {
 	}
 }
 ```
+## Onwards to 03
 That's all for this week. On to fleshing out the `initFilesystem()` method next.
