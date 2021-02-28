@@ -9,10 +9,24 @@ This doc will be expanded as I work on it over the coming weeks.
 
 You can get started by looking at the code in the `src` subfolder.<br>
 You'll find projects marked `01, 02...` and so on.<br><br>
-Each folder can be treated as a standalone version of the project as it was at time of creating it. None of them depend on each other so each can be looked at as a standalone project.<br>
+Each folder can be treated as a standalone version of the project as it was at time of creating it. None of them depend on each other so each can be looked at as a standalone project.<br><br>
+### Step Index:
+- Ex 01 - Laying the Foundation - Setting up the empty function bodies for our future work.
+- Ex 02 - Creating teh First Feature - Implementing user activation and prompt
+- Ex 03 - To Be Continued.
+
+
+That's the road so far.
 
 ## Where to see the project
 This project is a collection of Medium articles I'm writing as I learn Go and build out this project. You can find the article for the code in `src/01` <a href="https://alysonn.medium.com/a-virtual-filesystem-in-go-creating-our-foundation-9af62b0e82db">here</a>
 
 ## Project so far
-I've just started out and am still in the planning phases of the larger parts to come. I'll add the TODO list in the coming days.
+### TODO
+- Implement `initFilesystem` and `tearDown`
+- Add utility functions; `open`, `close` and `cat
+- Implement `chdir` and system navigation
+- Save and load state.
+
+
+#### Coded by AlysonBee
