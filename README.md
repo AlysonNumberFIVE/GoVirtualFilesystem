@@ -12,7 +12,7 @@ You'll find projects marked `01, 02...` and so on.<br><br>
 Each folder can be treated as a standalone version of the project as it was at time of creating it. None of them depend on each other so each can be looked at as a standalone project.<br><br>
 ### Step Index:
 - Ex 01 - Laying the Foundation - Setting up the empty function bodies for our future work.
-- Ex 02 - Creating teh First Feature - Implementing user activation and prompt
+- Ex 02 - Creating the First Feature - Implementing user activation and prompt
 - Ex 03 - To Be Continued.
 
 
