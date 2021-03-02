@@ -9,24 +9,21 @@ import (
 	"strings"
 )
 
+// our shell object.
 type shell struct {
-	env map[string]string
-}
-
-func initShell() *shell {
-	thisPath, _ := os.Getwd()
-	rootPath := strings.Replace(thisPath, "\\", "/", -1)
-	env["PWD"] = rootPath 	
-	env["HOME"]  = rootPath	
-	env["OLDPWD"] = rootPath
-	return &shell{
-		env: env,
-	}
+	env map[string]string // the environment varialbes.
 }
 
 // Env variable stores current directory infomration.
 var env map[string]string
 
+// initShell initializes our shell object.
+func initShell() *shell {
+	env = make(map[string]string)
+	return &shell{
+		env: env,
+	}
+}
 
 // clearScreen clears the terminal screen.
 func (s *shell) clearScreen() {
@@ -49,30 +46,52 @@ func (s *shell) clearScreen() {
 
 // doesDirExist checks if the dirName directory exists.
 func (s *shell) doesDirExist(dirName string, fs *fileSystem) bool {
-	fmt.Println("DoesExist entered")
 	if _, found := fs.directories[dirName]; found {
 		return true
 	}
 	return false
 }
 
-// chDir lists a directory's contents.
-func (s * shell) chDir(dirName string, fs *fileSystem) *fileSystem {
-	checker := fs
+// verifyPath ensures that the path in dirName exists.
+func (s * shell) verifyPath(dirName string, fs *fileSystem) *fileSystem {
+
+	checker := s.handleRootNav(dirName, fs)
 	segments := strings.Split(dirName, "/")
 
 	for _, segment := range segments {
 		if segment == ".." {
 			if checker.prev == nil {
-				break
+				continue 
 			}
 			checker = checker.prev
 		} else if s.doesDirExist(segment, checker) == true {
 			checker = checker.directories[segment]
 		} else {
+			fmt.Println("Doesn't exist")
 			fmt.Printf("Error : %s doesn't exist", dirName)
 			return fs
 		}
 	}
-	return checker
+	return checker 
+}
+
+// handleRootNav determines if we'll be handling changing directory
+// starting from our root.
+func (s * shell) handleRootNav(dirName string, fs *fileSystem) *fileSystem {
+
+	if dirName[0] == '/' {
+		return root
+	} else {
+		return fs
+	}
+}
+
+// chDir switches you to a different active directory.
+func (s * shell) chDir(dirName string, fs *fileSystem) *fileSystem {
+
+	if dirName == "/" {
+		return root
+	}
+
+	return s.verifyPath(dirName, fs)
 }

@@ -13,7 +13,7 @@ var globalFileTable map[uint64]string
 // The data structure for each file.
 type file struct {
 	name         string // The name of the file.
-	pathFromRoot string // The absolute path of the file.
+	rootPath     string // The absolute path of the file.
 	fileHash     uint64 // The unique file hash assigned to this file on creation.
 	fileType     string // The type of the file.
 	content      []byte // The file's content in bytes.
@@ -23,6 +23,7 @@ type file struct {
 //  The core struct that makes up the filesystem's file/directory
 type fileSystem struct {
 	name	    string                 // The name of the current directory we're in.
+	rootPath	string                 // The absolute path to this directory.
 	files       []file                 // The list of files in this directory.
 	directories map[string]*fileSystem // The list of directories in this directory.
 	prev        *fileSystem            // a reference pointer to this directory's parent directory.	
@@ -34,13 +35,19 @@ var root *fileSystem
 // initFilesystem scans the current directory and builds the VFS from it.
 func initFilesystem() * fileSystem {
 	// recursively grab all files and directories from this level downwards.
-	root := &fileSystem{
+	root = &fileSystem{
 		name: ".",
+		rootPath: ".",
 		directories: make(map[string]*fileSystem),
 	}
 	fs := root
 	fmt.Println("Welcome to the tiny virtual filesystem.")
 	return fs
+}
+
+// pwd prints the current working directory.
+func (fs * fileSystem) pwd() {
+	fmt.Println(fs.rootPath)
 }
 
 // reloadFilesys Resets the VFS and scraps all changes made up to this point.
@@ -73,9 +80,9 @@ func (fs  * fileSystem) close() error {
 
 // mkDir makes a virtual directory.
 func (fs  * fileSystem) mkDir(dirName string) error {
-	fmt.Println("mkDir() called")
 	newDir := &fileSystem{
 		name: dirName,
+		rootPath: fs.rootPath + "/" + dirName,
 		directories: make(map[string]*fileSystem),
 		prev: fs,
 	}
@@ -97,31 +104,52 @@ func (fs  * fileSystem) removeDir() error {
 
 // listDir lists a directory's contents.
 func (fs  * fileSystem) listDir() {
-	if fs.files == nil && len(fs.directories) == 0 {
-		fmt.Println("No directories at this level")
-		return 
-	}
+
 	if fs.files != nil {
 		fmt.Println("File:")
 		for _, file := range fs.files {
 			fmt.Printf("\t%s\n", file.name)
 		}
 	}
-	if fs.directories != nil {
+	if len(fs.directories) > 0 {
 		fmt.Println("Directories:")
 		for dirName := range fs.directories {
 			fmt.Printf("\t%s\n", dirName)
 		}
 	}
-	fmt.Println("listDir() called")
+}
+
+func (fs * fileSystem) usage(comms []string) bool {
+	switch comms[0] {
+	case "mkdir":
+		if len(comms) < 2 {
+			fmt.Println("Usage : mkdir [list of directories to make]")
+			return false
+		}
+	case "open":
+		if len(comms) != 2 {
+			fmt.Println("Usage : open [file name]")
+			return false
+		}
+	case "rm":
+		if len(comms) != 2 {
+			fmt.Println("Usage : rm [list of files]")
+			return false
+		}
+	}
+	return true
 }
 
 // execute runs the commands passed into it.
 func (fs * fileSystem) execute(comms []string) * fileSystem {
-
+	if fs.usage(comms) == false {
+		return fs
+	}
 	switch comms[0] {
 	case "mkdir":
 		fs.mkDir(comms[1])
+	case "pwd":
+		fs.pwd()
 	case "open":
 		fs.open()
 	case "close":	
