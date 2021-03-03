@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -20,6 +21,10 @@ func shellLoop(currentUser *user) {
 
 		comms := strings.Split(input, " ")
 		if comms[0] == "cd" {
+			if len(comms) != 2 {
+				fmt.Println("Usage : cd [directory]")
+				continue 
+			}
 			fs = shell.chDir(comms[1], fs)
 		} else if comms[0] == "clear" {
 			shell.clearScreen()
