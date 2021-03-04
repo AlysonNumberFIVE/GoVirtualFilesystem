@@ -79,7 +79,13 @@ func (fs  * fileSystem) close() error {
 }
 
 // mkDir makes a virtual directory.
-func (fs  * fileSystem) mkDir(dirName string) error {
+func (fs  * fileSystem) mkDir(dirName string) bool {
+
+	if _, exists := fs.directories[dirName]; exists {
+		fmt.Println("mkdir : directory already exists")
+		return false
+	}
+
 	newDir := &fileSystem{
 		name: dirName,
 		rootPath: fs.rootPath + "/" + dirName,
@@ -87,7 +93,7 @@ func (fs  * fileSystem) mkDir(dirName string) error {
 		prev: fs,
 	}
 	fs.directories[dirName] = newDir
-	return nil
+	return false
 }
 
 // removeFile removes a file from the virtual filesystem.
@@ -119,6 +125,8 @@ func (fs  * fileSystem) listDir() {
 	}
 }
 
+// usage prints verifies that each command has the correct amount of
+// command arguments and throws an error if not.
 func (fs * fileSystem) usage(comms []string) bool {
 	switch comms[0] {
 	case "mkdir":
@@ -129,11 +137,6 @@ func (fs * fileSystem) usage(comms []string) bool {
 	case "open":
 		if len(comms) != 2 {
 			fmt.Println("Usage : open [file name]")
-			return false
-		}
-	case "rm":
-		if len(comms) != 2 {
-			fmt.Println("Usage : rm [list of files]")
 			return false
 		}
 	}
