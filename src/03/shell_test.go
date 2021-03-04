@@ -93,6 +93,58 @@ func TestVerifyPath(t *testing.T) {
 	}
 }
 
+// TestDoesDirExist tests if doesDirExist works.
+func TestDoesDirExist(t *testing.T) {
+	filesystemTest := initFilesystem()
+	shell := initShell()
+
+	filesystemTest.mkDir("newDirectory")
+	if shell.doesDirExist("newDirectory", filesystemTest) == false {
+		t.Errorf("Directory falsly flagged as nonexistent")
+	}
+	if shell.doesDirExist("doesNotExist", filesystemTest) == true {
+		t.Errorf("Directory falsly flagged as existing")
+	}
+}
+
+// TestHandleRootNav tests that handleRootNav returns us to root
+// upon passing in a path that starts with a '/' character.
+func TestHandleRootNav(t *testing.T) {
+	filesystemTest := initFilesystem()
+	shell := initShell()
+
+	filesystemTest.mkDir("dir1")
+	filesystemTest = shell.chDir("dir1", filesystemTest)
+	filesystemTest.mkDir("dir2")
+	filesystemTest = shell.chDir("dir2", filesystemTest)
+	filesystemTest.mkDir("dir3")
+	filesystemTest = shell.chDir("dir3", filesystemTest)
+
+	tmpFs := shell.handleRootNav("/root/path", filesystemTest)
+	if tmpFs.rootPath != "." {
+		t.Errorf("Changing to root isn't working")
+	}
+	tmpFs = shell.handleRootNav("..", filesystemTest)
+	if tmpFs != filesystemTest {
+		t.Errorf("Handle root not working")
+	}
+}
+
+// TestChDir tests that chDir behaves as expected.
+// Only existent and nonexist directories will be checked
+// as path correction is checked by TestVerifyPath.
+func TestChDir(t *testing.T) {
+	filesystemTest := initFilesystem()
+	shell := initShell()
+
+	
+}
+
+
+
+
+
+
 
 
 

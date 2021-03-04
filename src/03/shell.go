@@ -54,7 +54,6 @@ func (s *shell) doesDirExist(dirName string, fs *fileSystem) bool {
 
 // verifyPath ensures that the path in dirName exists.
 func (s * shell) verifyPath(dirName string, fs *fileSystem) *fileSystem {
-
 	checker := s.handleRootNav(dirName, fs)
 	segments := strings.Split(dirName, "/")
 	
@@ -80,20 +79,16 @@ func (s * shell) verifyPath(dirName string, fs *fileSystem) *fileSystem {
 // handleRootNav determines if we'll be handling changing directory
 // starting from our root.
 func (s * shell) handleRootNav(dirName string, fs *fileSystem) *fileSystem {
-
 	if dirName[0] == '/' {
 		return root
-	} else {
-		return fs
 	}
+	return fs
 }
 
 // chDir switches you to a different active directory.
 func (s * shell) chDir(dirName string, fs *fileSystem) *fileSystem {
-
 	if dirName == "/" {
 		return root
 	}
-
 	return s.verifyPath(dirName, fs)
 }
