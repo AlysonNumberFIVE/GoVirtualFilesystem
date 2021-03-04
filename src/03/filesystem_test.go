@@ -90,22 +90,4 @@ func TestUsage(t *testing.T) {
 	if filesystemTest.usage(comms) == false {
 		t.Errorf("Opening a target file failed")
 	}
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

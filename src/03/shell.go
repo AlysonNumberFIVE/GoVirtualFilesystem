@@ -57,8 +57,11 @@ func (s * shell) verifyPath(dirName string, fs *fileSystem) *fileSystem {
 
 	checker := s.handleRootNav(dirName, fs)
 	segments := strings.Split(dirName, "/")
-
+	
 	for _, segment := range segments {
+		if len(segment) == 0 {
+			continue 
+		}
 		if segment == ".." {
 			if checker.prev == nil {
 				continue 
@@ -67,8 +70,7 @@ func (s * shell) verifyPath(dirName string, fs *fileSystem) *fileSystem {
 		} else if s.doesDirExist(segment, checker) == true {
 			checker = checker.directories[segment]
 		} else {
-			fmt.Println("Doesn't exist")
-			fmt.Printf("Error : %s doesn't exist", dirName)
+			fmt.Printf("Error : %s doesn't exist\n", dirName)
 			return fs
 		}
 	}
