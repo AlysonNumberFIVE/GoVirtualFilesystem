@@ -1,6 +1,6 @@
 # Ex 03 - Implementing a Shell.
 
-The accompanying article for this week can be found <a href="">here</a><br><br>
+The accompanying article for this week can be found <a href="https://alysonn.medium.com/go-virtual-filesystem-and-a-shell-too-i-guess-25d4f357d8ad">here</a><br><br>
 The plan changed from last week and fleshing out the interactive shell became a necessity. The goal for this week is to have a shell with the following behavior:<br>
 <img src="https://github.com/AlysonBee/GoVirtualFilesystem/blob/master/assets/demo2.gif"  height="400" />
 ## chDir and mkDir
