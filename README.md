@@ -13,7 +13,8 @@ Each folder can be treated as a standalone version of the project as it was at t
 ### Step Index:
 - Ex 01 - Laying the Foundation - Setting up the empty function bodies for our future work.
 - Ex 02 - Creating the First Feature - Implementing user activation and prompt
-- Ex 03 - To Be Continued.
+- Ex 03 - Implementing a Shell.
+- Ex 04 - To Be Continued.
 
 
 That's the road so far.
