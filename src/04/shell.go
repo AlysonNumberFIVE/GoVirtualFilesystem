@@ -6,6 +6,7 @@ import (
 	"os"
 	"runtime"
 	"os/exec"
+	"io/ioutil"
 	"strings"
 )
 
@@ -91,4 +92,80 @@ func (s * shell) chDir(dirName string, fs *fileSystem) *fileSystem {
 		return root
 	}
 	return s.verifyPath(dirName, fs)
+}
+
+func (s * shell) reassemble(dirPath []string) string {
+	counter := 1
+	var finishedPath string
+
+	finishedPath = dirPath[0]
+	for counter < len(dirPath) - 1 {
+		finishedPath = finishedPath + "/" + dirPath[counter]
+		counter++
+	}
+	fmt.Println("reassemble ", finishedPath)
+	return finishedPath
+}
+
+func (s * shell) readFile(filename string) {
+	dat, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return
+	}
+	fmt.Println(string(dat))
+} 
+
+func (s * shell) cat(filename string, fs *fileSystem) {
+	segments := strings.Split(filename, "/")
+	if len(segments) == 1 {
+		s.readFile(fs.files[filename].rootPath)
+	} else {
+		dirPath := s.reassemble(segments)
+		tmp := s.verifyPath(dirPath, fs)
+
+		for _, value := range tmp.files {
+			fmt.Println(value)
+		}
+		fmt.Println(">> ", segments[len(segments) - 1])
+		if _, exists := tmp.files[segments[len(segments)-1]]; exists {
+			s.readFile(tmp.files[segments[len(segments)-1]].rootPath)
+			fmt.Println("File exists")
+		} else {
+			fmt.Println("cat : file doesn't exist")
+		}
+	}
+}
+
+func (s * shell) usage(comms[] string) bool {
+	switch comms[0] {
+	case "cd":
+		if len(comms) != 2 {
+			fmt.Println("Usage : cd [target directory")
+			return false
+		}
+	case "cat":
+		if len(comms) != 2 {
+			fmt.Println("Usage : cat [target file]")
+			return false
+		}
+	}
+	return true
+}
+
+func (s * shell) execute(comms []string, fs *fileSystem) (*fileSystem, bool) {
+
+	if s.usage(comms) == false {
+		return fs, false
+	}
+	switch comms[0] {
+	case "cd":
+		fs = s.chDir(comms[1], fs)
+	case "cat":
+		s.cat(comms[1], fs)
+	case "clear":
+		s.clearScreen()
+	default:
+		return fs, false
+	}
+	return fs, true
 }

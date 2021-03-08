@@ -2,12 +2,12 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 )
 
 // shellLoop runs the main shell loop for the filesystem.
 func shellLoop(currentUser *user) {
+	var shellFlag bool
 
 	shell := initShell()
 	fs := initFilesystem()
@@ -20,22 +20,20 @@ func shellLoop(currentUser *user) {
 		}
 
 		comms := strings.Split(input, " ")
-		if comms[0] == "cd" {
-			if len(comms) != 2 {
-				fmt.Println("Usage : cd [directory]")
-				continue 
-			}
-			fs = shell.chDir(comms[1], fs)
-		} else if comms[0] == "clear" {
-			shell.clearScreen()
-		} else {
-			fs.execute(comms)
+
+		fs, shellFlag = shell.execute(comms, fs)
+		if shellFlag == true {
+			continue 
+		}
+
+		fs, shellFlag = fs.execute(comms)
+		if shellFlag == true {
+			continue 
 		}
 	}
 }
 
 func main() {
-
 	currentUser := initUser()
 
 	shellLoop(currentUser)
