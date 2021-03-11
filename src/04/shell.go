@@ -123,10 +123,6 @@ func (s * shell) cat(filename string, fs *fileSystem) {
 		dirPath := s.reassemble(segments)
 		tmp := s.verifyPath(dirPath, fs)
 
-		for _, value := range tmp.files {
-			fmt.Println(value)
-		}
-		fmt.Println(">> ", segments[len(segments) - 1])
 		if _, exists := tmp.files[segments[len(segments)-1]]; exists {
 			s.readFile(tmp.files[segments[len(segments)-1]].rootPath)
 			fmt.Println("File exists")
