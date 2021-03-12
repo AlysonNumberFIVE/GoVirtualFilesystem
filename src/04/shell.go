@@ -118,7 +118,11 @@ func (s * shell) readFile(filename string) {
 func (s * shell) cat(filename string, fs *fileSystem) {
 	segments := strings.Split(filename, "/")
 	if len(segments) == 1 {
-		s.readFile(fs.files[filename].rootPath)
+		if _, exists := fs.files[filename]; exists {
+			s.readFile(fs.files[filename].rootPath)
+		} else {
+			fmt.Println("cat : file doesn't exist")
+		}
 	} else {
 		dirPath := s.reassemble(segments)
 		tmp := s.verifyPath(dirPath, fs)
@@ -137,12 +141,12 @@ func (s * shell) usage(comms[] string) bool {
 	case "cd":
 		if len(comms) != 2 {
 			fmt.Println("Usage : cd [target directory")
-			return false
+			return true
 		}
 	case "cat":
 		if len(comms) != 2 {
 			fmt.Println("Usage : cat [target file]")
-			return false
+			return true
 		}
 	}
 	return true
