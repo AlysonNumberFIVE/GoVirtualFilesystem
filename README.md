@@ -15,7 +15,7 @@ Each folder can be treated as a standalone version of the project as it was at t
 - Ex 02 - Creating the First Feature - Implementing user activation and prompt
 - Ex 03 - Implementing a Shell.
 - Ex 04 - Completing Filesystem Initialization.
-- Ex 05 - To Be Continued.
+- Ex 05 - To Be Added.
 
 
 That's the road so far.
