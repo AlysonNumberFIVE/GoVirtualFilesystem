@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 	"io/ioutil"
+	"bytes"
+
 )
 
 // A global list of all files created and their respective names for
@@ -34,6 +36,8 @@ type fileSystem struct {
 // Root node.
 var root *fileSystem
 
+// image buffer
+var fileContent bytes.Buffer
 
 // makeFilesystem creates a single filesystem object.
 func makeFilesystem(dirName string, rootPath string, prev *fileSystem) * fileSystem {
@@ -44,6 +48,12 @@ func makeFilesystem(dirName string, rootPath string, prev *fileSystem) * fileSys
 		directories: make(map[string]*fileSystem),
 		prev: prev,
 	}
+}
+
+func returnFileContent(filename string) []byte {
+	dat, _ := ioutil.ReadFile(filename)
+	fmt.Println(filename)
+	return dat
 }
 
 // testFilessytemCreation initializes the filesystem by replicating
@@ -69,6 +79,7 @@ func testFilesystemCreation(dirName string, fs *fileSystem) *fileSystem{
 			fs.files[fileName.Name()] = &file{
 				name: fileName.Name(),
 				rootPath: strings.ReplaceAll(dirName, "\\", "/" ) + "/" + fileName.Name(),
+				content: returnFileContent(dirName + "\\" + fileName.Name()),
 			}
 		}
 		index++
@@ -96,6 +107,8 @@ func (fs  * fileSystem) reloadFilesys() {
 	fmt.Println("Refreshing...")
 }
 
+// file offset index.
+var index int
 // tearDown gracefully ends the current session.
 func (fs  * fileSystem) tearDown(root *fileSystem) {
 	var fileObj *file
@@ -103,14 +116,21 @@ func (fs  * fileSystem) tearDown(root *fileSystem) {
 
 	fmt.Println("directory:", root.rootPath)
 	if root.rootPath == "." {
-
+		index = 0
 	}
 	for fileName := range fileList {
 		fileObj = fileList[fileName]
 		fmt.Println("name:", fileObj.name)
-		fmt.Println("content:", fileObj.content)
+		fileContent.WriteString(fileObj.name)
+		fileContent.WriteString("\x44\x33\x22\x11")
+		//fmt.Println("content:", fileObj.content)
+
+		fileContent.Write(fileObj.content)
+		fileContent.WriteString("\x44\x33\x22\x11")
 		fmt.Println("rootPath:", fileObj.rootPath)
+		fileContent.WriteString(fileObj.rootPath)
 	}
+	fmt.Println(fileContent.String())
 	dirList := root.directories
 	for fileName := range dirList {
 		fs.tearDown(dirList[fileName])
