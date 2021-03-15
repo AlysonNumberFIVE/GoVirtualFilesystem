@@ -14,7 +14,8 @@ Each folder can be treated as a standalone version of the project as it was at t
 - Ex 01 - Laying the Foundation - Setting up the empty function bodies for our future work.
 - Ex 02 - Creating the First Feature - Implementing user activation and prompt
 - Ex 03 - Implementing a Shell.
-- Ex 04 - To Be Continued.
+- Ex 04 - Completing Filesystem Initialization.
+- Ex 05 - To Be Added.
 
 
 That's the road so far.
@@ -24,9 +25,8 @@ This project is a collection of Medium articles I'm writing as I learn Go and bu
 
 ## Project so far
 ### TODO
-- Implement `initFilesystem` and `tearDown`
-- Add utility functions; `open`, `close` and `cat
-- Implement `chdir` and system navigation
+- Implement `tearDown`
+- Add utility functions; `open` and `close`
 - Save and load state.
 
 
