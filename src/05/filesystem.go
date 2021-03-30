@@ -158,7 +158,15 @@ func (fs  * fileSystem) saveState() {
 }
 
 // open will allow for opening files in virtual space.
-func (fs  * fileSystem) open() error {
+func (fs  * fileSystem) open(filename string) error {
+	if _, exists := fs.files[filename]; exists {
+		fileObj := fs.files[filename]
+		fo, _ := os.Create("TESTING")
+		fo.Write(fileObj.content)
+		fo.Close()
+	} else {
+		fmt.Println(filename, ": file doesn't exist.")
+	}
 	fmt.Println("open() called")
 	return nil
 }
@@ -238,7 +246,7 @@ func (fs * fileSystem) execute(comms []string) (*fileSystem, bool) {
 	case "pwd":
 		fs.pwd()
 	case "open":
-		fs.open()
+		fs.open(comms[1])
 	case "close":	
 		fs.close()
 	case "ls":
@@ -247,7 +255,7 @@ func (fs * fileSystem) execute(comms []string) (*fileSystem, bool) {
 		fs.removeFile()
 		fs.removeDir() 
 	case "exit":
-		fs.tearDown(root)
+		//fs.tearDown(root)
 		os.Exit(1)
 	default:
 		fmt.Println(comms[0] , ": Command not found")
