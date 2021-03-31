@@ -91,6 +91,7 @@ func testFilesystemCreation(dirName string, fs *fileSystem) *fileSystem{
 func initFilesystem() * fileSystem {
 	// recursively grab all files and directories from this level downwards.
 	root = testFilesystemCreation(".", nil)
+	os.Mkdir("session")
 	fs := root
 	fmt.Println("Welcome to the tiny virtual filesystem.")
 	return fs
@@ -160,8 +161,9 @@ func (fs  * fileSystem) saveState() {
 // open will allow for opening files in virtual space.
 func (fs  * fileSystem) open(filename string) error {
 	if _, exists := fs.files[filename]; exists {
+
 		fileObj := fs.files[filename]
-		fo, _ := os.Create("TESTING")
+		fo, _ := os.Create("session\\TESTING")
 		fo.Write(fileObj.content)
 		fo.Close()
 	} else {

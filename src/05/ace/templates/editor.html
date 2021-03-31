@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ACE in Action</title>
+<style type="text/css" media="screen">
+    #editor { 
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+</head>
+<body>
+
+<div id="editor">{{ source_code }}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/{{ ext }}");
+
+    
+    document.addEventListener("keydown", function(e) {
+      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+        e.preventDefault();                         
+        console.log(editor.getValue())
+        $.ajax({
+            type: 'POST',
+            url: '/save',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({'data': editor.getValue()}),
+            success: function() {
+                console.log("success")
+            }
+        });
+        // Process the event here (such as click on submit button)
+      }
+    }, false);
+
+
+
+</script>
+</body>
+</html>
