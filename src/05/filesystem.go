@@ -7,7 +7,7 @@ import (
 	"strings"
 	"io/ioutil"
 	"bytes"
-
+	"os/exec"
 )
 
 // A global list of all files created and their respective names for
@@ -91,7 +91,7 @@ func testFilesystemCreation(dirName string, fs *fileSystem) *fileSystem{
 func initFilesystem() * fileSystem {
 	// recursively grab all files and directories from this level downwards.
 	root = testFilesystemCreation(".", nil)
-	os.Mkdir("session")
+	os.Mkdir("session", 0777)
 	fs := root
 	fmt.Println("Welcome to the tiny virtual filesystem.")
 	return fs
@@ -163,7 +163,22 @@ func (fs  * fileSystem) open(filename string) error {
 	if _, exists := fs.files[filename]; exists {
 
 		fileObj := fs.files[filename]
-		fo, _ := os.Create("session\\TESTING")
+		extension := strings.Split(fileObj.name, ".")
+		filename := "TESTING." + extension[len(extension) - 1] 
+		fo, _ := os.Create("session\\" + filename)
+		os.Chdir("ace")
+
+
+
+		fmt.Println("Changing directories")
+		cmd := exec.Command("C:\\Users\\Allyson\\AppData\\Local\\Programs\\Python\\Python37\\python.exe", "app.py")
+		_, err := cmd.StdoutPipe()
+	    if err != nil {
+	        panic(err)
+	    }
+	    cmd.StderrPipe()
+	    cmd.Run()
+
 		fo.Write(fileObj.content)
 		fo.Close()
 	} else {
@@ -257,6 +272,7 @@ func (fs * fileSystem) execute(comms []string) (*fileSystem, bool) {
 		fs.removeFile()
 		fs.removeDir() 
 	case "exit":
+		os.RemoveAll("session")
 		//fs.tearDown(root)
 		os.Exit(1)
 	default:

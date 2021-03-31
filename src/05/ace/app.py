@@ -1,5 +1,6 @@
 import sys
 import webbrowser
+import glob
 
 from threading import Timer
 from flask import Flask 
@@ -31,6 +32,10 @@ def write_file(content: str):
 def open_browser():
 	webbrowser.open_new('http://127.0.0.1:5000/')
 
+def get_name():
+	filename = glob.glob("..\\session\\*")
+	return filename[0]
+
 
 @app.route('/save', methods=['POST'])
 def save():
@@ -41,10 +46,14 @@ def save():
 
 @app.route('/')
 def index():
-	content = open('TESTING').read()
-	extension = 'TESTING.go'.split(".")
-	ext = examine_outputs(extension[1])
-	return render_template("editor.html", source_code=content, ext=ext )
+	filename = get_name()
+	content = open(filename).read()
+	extension = filename.split(".")
+	ext = ''
+	if len(extension) > 1:
+		ext = examine_outputs(extension[1])
+	print(ext)
+	return render_template("editor.html", source_code=content, ext=ext)
 
 
 
