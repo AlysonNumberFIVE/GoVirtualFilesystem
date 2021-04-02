@@ -168,19 +168,17 @@ func (fs  * fileSystem) open(filename string) error {
 		fo, _ := os.Create("session\\" + filename)
 		os.Chdir("ace")
 
-
-
-		fmt.Println("Changing directories")
-		cmd := exec.Command("C:\\Users\\Allyson\\AppData\\Local\\Programs\\Python\\Python37\\python.exe", "app.py")
-		_, err := cmd.StdoutPipe()
-	    if err != nil {
-	        panic(err)
-	    }
-	    cmd.StderrPipe()
-	    cmd.Run()
-
 		fo.Write(fileObj.content)
 		fo.Close()
+
+		fmt.Println("Changing directories")
+		cmd := exec.Command("cmd", "/C", "python3", "app.py")
+		if err := cmd.Run(); err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println("Running")
+		}
+
 	} else {
 		fmt.Println(filename, ": file doesn't exist.")
 	}

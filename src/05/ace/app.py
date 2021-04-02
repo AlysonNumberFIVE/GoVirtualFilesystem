@@ -1,6 +1,7 @@
 import sys
 import webbrowser
 import glob
+import signal
 
 from threading import Timer
 from flask import Flask 
@@ -19,6 +20,12 @@ supported_formats = {
 	"js": "javascript"
 }
 
+
+def signal_handler(sig, frame):
+	print('exiting...')
+	sys.exit(0)
+
+
 def examine_outputs(format: str):
 	if format in supported_formats:
 		return supported_formats[format]
@@ -34,6 +41,7 @@ def open_browser():
 
 def get_name():
 	filename = glob.glob("..\\session\\*")
+
 	return filename[0]
 
 
@@ -51,12 +59,13 @@ def index():
 	extension = filename.split(".")
 	ext = ''
 	if len(extension) > 1:
-		ext = examine_outputs(extension[1])
+		ext = examine_outputs(extension[-1])
 	print(ext)
 	return render_template("editor.html", source_code=content, ext=ext)
 
 
 
 if __name__ == '__main__':
+	signal.signal(signal.SIGINT, signal_handler)
 	Timer(0.5, open_browser).start();
 	app.run()
