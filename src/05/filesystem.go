@@ -7,7 +7,6 @@ import (
 	"strings"
 	"io/ioutil"
 	"bytes"
-	"os/exec"
 )
 
 // A global list of all files created and their respective names for
@@ -38,6 +37,9 @@ var root *fileSystem
 
 // image buffer
 var fileContent bytes.Buffer
+
+ // file to be edited when opened.
+var editingFile *file
 
 // makeFilesystem creates a single filesystem object.
 func makeFilesystem(dirName string, rootPath string, prev *fileSystem) * fileSystem {
@@ -91,7 +93,6 @@ func testFilesystemCreation(dirName string, fs *fileSystem) *fileSystem{
 func initFilesystem() * fileSystem {
 	// recursively grab all files and directories from this level downwards.
 	root = testFilesystemCreation(".", nil)
-	os.Mkdir("session", 0777)
 	fs := root
 	fmt.Println("Welcome to the tiny virtual filesystem.")
 	return fs
@@ -110,6 +111,7 @@ func (fs  * fileSystem) reloadFilesys() {
 
 // file offset index.
 var index int
+
 // tearDown gracefully ends the current session.
 func (fs  * fileSystem) tearDown(root *fileSystem) {
 	var fileObj *file
@@ -161,28 +163,11 @@ func (fs  * fileSystem) saveState() {
 // open will allow for opening files in virtual space.
 func (fs  * fileSystem) open(filename string) error {
 	if _, exists := fs.files[filename]; exists {
-
-		fileObj := fs.files[filename]
-		extension := strings.Split(fileObj.name, ".")
-		filename := "TESTING." + extension[len(extension) - 1] 
-		fo, _ := os.Create("session\\" + filename)
-		os.Chdir("ace")
-
-		fo.Write(fileObj.content)
-		fo.Close()
-
-		fmt.Println("Changing directories")
-		cmd := exec.Command("cmd", "/C", "python3", "app.py")
-		if err := cmd.Run(); err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Println("Running")
-		}
-
+		editingFile = fs.files[filename]
+		editor()
 	} else {
 		fmt.Println(filename, ": file doesn't exist.")
 	}
-	fmt.Println("open() called")
 	return nil
 }
 
@@ -270,7 +255,6 @@ func (fs * fileSystem) execute(comms []string) (*fileSystem, bool) {
 		fs.removeFile()
 		fs.removeDir() 
 	case "exit":
-		os.RemoveAll("session")
 		//fs.tearDown(root)
 		os.Exit(1)
 	default:

@@ -119,10 +119,14 @@ func (s * shell) readFile(filename string) {
 
 // cat dups the contents of a file.
 func (s * shell) cat(filename string, fs *fileSystem) {
+	var content string
+
 	segments := strings.Split(filename, "/")
 	if len(segments) == 1 {
 		if _, exists := fs.files[filename]; exists {
-			s.readFile(fs.files[filename].rootPath)
+			content := string(fs.files[filename].content)
+			fmt.Println(content)
+		//	s.readFile(fs.files[filename].rootPath)
 		} else {
 			fmt.Println("cat : file doesn't exist")
 		}
@@ -131,7 +135,9 @@ func (s * shell) cat(filename string, fs *fileSystem) {
 		tmp := s.verifyPath(dirPath, fs)
 
 		if _, exists := tmp.files[segments[len(segments)-1]]; exists {
-			s.readFile(tmp.files[segments[len(segments)-1]].rootPath)
+			content = string(tmp.files[segments[len(segments)-1]].content)
+			fmt.Println(content)
+			//s.readFile(tmp.files[segments[len(segments)-1]].rootPath)
 			fmt.Println("File exists")
 		} else {
 			fmt.Println("cat : file doesn't exist")
