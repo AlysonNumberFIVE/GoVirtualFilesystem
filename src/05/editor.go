@@ -15,13 +15,16 @@ import (
 	"encoding/json"
 )
 
+// the template variable for templating the HTML file.
 var tpl = template.Must(template.ParseFiles("editor/editor.html"))
 
+// sourceCode holds the source code and file extension of the file being inspected.
 type sourceCode struct {
 	Code string
 	Ext string
 }
 
+// indexHandler handles the text editor display screen..
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	buf := &bytes.Buffer{}
 	
@@ -38,6 +41,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	buf.WriteTo(w)
 }
 
+// saveHandler is responsbile for saving the file when Ctrl+S is pressed in the text editor.
 func saveHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var data map[string]string
@@ -46,6 +50,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// openbrowser triggers the opening of the web browser when the app starts up.
 func openbrowser(url string) {
 	var err error
 
@@ -64,7 +69,8 @@ func openbrowser(url string) {
 	}
 }
 
-
+// editor is the function responsible for the text editor
+// web interface.
 func editor() {
 	mux := http.NewServeMux()
 	c := make(chan os.Signal, 1)
@@ -86,7 +92,3 @@ func editor() {
     })
 	server.ListenAndServe()
 }
-
-
-
-

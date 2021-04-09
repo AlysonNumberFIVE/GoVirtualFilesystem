@@ -54,7 +54,6 @@ func makeFilesystem(dirName string, rootPath string, prev *fileSystem) * fileSys
 
 func returnFileContent(filename string) []byte {
 	dat, _ := ioutil.ReadFile(filename)
-	fmt.Println(filename)
 	return dat
 }
 
@@ -112,36 +111,7 @@ func (fs  * fileSystem) reloadFilesys() {
 // file offset index.
 var index int
 
-// tearDown gracefully ends the current session.
-func (fs  * fileSystem) tearDown(root *fileSystem) {
-	var fileObj *file
-	fileList := root.files 
-
-	fmt.Println("directory:", root.rootPath)
-	if root.rootPath == "." {
-		index = 0
-	}
-	for fileName := range fileList {
-		fileObj = fileList[fileName]
-		fmt.Println("name:", fileObj.name)
-		fileContent.WriteString(fileObj.name)
-		fileContent.WriteString("\x44\x33\x22\x11")
-		//fmt.Println("content:", fileObj.content)
-
-		fileContent.Write(fileObj.content)
-		fileContent.WriteString("\x44\x33\x22\x11")
-		fmt.Println("rootPath:", fileObj.rootPath)
-		fileContent.WriteString(fileObj.rootPath)
-	}
-	fmt.Println(fileContent.String())
-	dirList := root.directories
-	for fileName := range dirList {
-		fs.tearDown(dirList[fileName])
-	}
-	fmt.Println("Teardown")
-}
-
-
+// touch creates an empty file.
 func (fs * fileSystem) touch(filename string) bool {
 	if _, exists := fs.files[filename]; exists {
 		fmt.Printf("touch : file already exists")
@@ -158,23 +128,6 @@ func (fs * fileSystem) touch(filename string) bool {
 // saveState aves the state of the VFS at this time.
 func (fs  * fileSystem) saveState() {
 	fmt.Println("Save the current state of the VFS")
-}
-
-// open will allow for opening files in virtual space.
-func (fs  * fileSystem) open(filename string) error {
-	if _, exists := fs.files[filename]; exists {
-		editingFile = fs.files[filename]
-		editor()
-	} else {
-		fmt.Println(filename, ": file doesn't exist.")
-	}
-	return nil
-}
-
-// close closes open virtual files.
-func (fs  * fileSystem) close() error {
-	fmt.Println("close() called")
-	return nil
 }
 
 // mkDir makes a virtual directory.
@@ -226,11 +179,6 @@ func (fs * fileSystem) usage(comms []string) bool {
 			fmt.Println("Usage : mkdir [list of directories to make]")
 			return false
 		}
-	case "open":
-		if len(comms) != 2 {
-			fmt.Println("Usage : open [file name]")
-			return false
-		}
 	}
 	return true
 }
@@ -245,17 +193,12 @@ func (fs * fileSystem) execute(comms []string) (*fileSystem, bool) {
 		fs.mkDir(comms[1])
 	case "pwd":
 		fs.pwd()
-	case "open":
-		fs.open(comms[1])
-	case "close":	
-		fs.close()
 	case "ls":
 		fs.listDir()
 	case "rm":
 		fs.removeFile()
 		fs.removeDir() 
 	case "exit":
-		//fs.tearDown(root)
 		os.Exit(1)
 	default:
 		fmt.Println(comms[0] , ": Command not found")

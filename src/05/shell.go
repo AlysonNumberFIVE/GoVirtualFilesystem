@@ -94,6 +94,31 @@ func (s * shell) chDir(dirName string, fs *fileSystem) *fileSystem {
 	return s.verifyPath(dirName, fs)
 }
 
+func (s * shell) open(filename string, fs *fileSystem) error {
+
+	segments := strings.Split(filename, "/")
+	if len(segments) == 1 {
+		if _, exists := fs.files[filename]; exists {
+			editingFile = fs.files[filename]
+			editor()
+		} else {
+			fmt.Println(filename, ": file doesn't exist.")
+		}
+	} else {
+		dirPath := s.reassemble(segments)
+		tmp := s.verifyPath(dirPath, fs)		
+		if _, exists := tmp.files[segments[len(segments)-1]]; exists {
+			editingFile = tmp.files[segments[len(segments)-1]]
+			editor()
+			//s.readFile(tmp.files[segments[len(segments)-1]].rootPath)
+
+		} else {
+			fmt.Println("cat : file doesn't exist")
+		}		
+	}
+	return nil
+}
+
 // reassemble rebuilds the path.
 func (s * shell) reassemble(dirPath []string) string {
 	counter := 1
@@ -158,6 +183,12 @@ func (s * shell) usage(comms[] string) bool {
 			fmt.Println("Usage : cat [target file]")
 			return false
 		}
+
+	case "open":
+		if len(comms) != 2 {
+			fmt.Println("Usage : open [file name]")
+			return false
+		}
 	}
 	return true
 }
@@ -169,6 +200,8 @@ func (s * shell) execute(comms []string, fs *fileSystem) (*fileSystem, bool) {
 		return fs, false
 	}
 	switch comms[0] {
+	case "open":
+		s.open(comms[1], fs)
 	case "cd":
 		fs = s.chDir(comms[1], fs)
 	case "cat":
