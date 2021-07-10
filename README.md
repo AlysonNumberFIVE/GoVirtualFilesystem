@@ -15,19 +15,14 @@ Each folder can be treated as a standalone version of the project as it was at t
 - Ex 02 - Creating the First Feature - Implementing user activation and prompt
 - Ex 03 - Implementing a Shell.
 - Ex 04 - Completing Filesystem Initialization.
-- Ex 05 - To Be Added.
+- Ex 05 - Adding a Text Editor
 
 
-That's the road so far.
+That's the road so far.<BR><BR>
+
+UPDATE: For now, I decided to end this project here. I ran into issues attempting to add file image writing.<BR>
 
 ## Where to see the project
 This project is a collection of Medium articles I'm writing as I learn Go and build out this project. You can find the article for the code in `src/01` <a href="https://alysonn.medium.com/a-virtual-filesystem-in-go-creating-our-foundation-9af62b0e82db">here</a>
-
-## Project so far
-### TODO
-- Implement `tearDown`
-- Add utility functions; `open` and `close`
-- Save and load state.
-
 
 #### Coded by AlysonBee
